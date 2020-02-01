@@ -19,16 +19,20 @@ export default {
   },
   data() {
     return {
-      
+      banners: [],
+      recommends: []
     }
   },
+  //生命周期函数，组件一旦创建就会调用函数
   created() {
     //请求多个数据
     getHomeMultidata().then(res =>{
-      console.log(res);
-      
+      // console.log(res);
+      this.banners = res.data.banner.list;
+      this.recommends = res.data.recommend.list;
+
     })
-  },
+  }
 }
 </script>
 
