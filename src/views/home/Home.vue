@@ -1,10 +1,19 @@
 <template>
-  <h2>首页</h2>
+  <div id="home">
+    <router-view></router-view>
+    <nav-bar></nav-bar>
+
+  </div>
 </template>
 
 <script>
+  import NavBar from 'components/common/navbar/NavBar';
+
 export default {
-  name:'Home'
+  name:'Home',
+  components:{
+    NavBar
+  }
 }
 </script>
 
