@@ -87,7 +87,7 @@ export default {
   },
   data() {
     return {
-      banners: [],
+      banners: [], 
       recommends: [],
       // 存放商品数据
       goods:{
