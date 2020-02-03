@@ -118,15 +118,28 @@ export default {
       scroll:null
     }
   },
+  // 组件挂载完执行函数
   mounted() {    
      this.scroll = new BScroll(this.$refs.aaa,{
-       
+       probeType:3,
+       click:true,
+       pullUpLoad:true
      })
+     this.scroll.on('scroll',position =>{
+       console.log(position);
+     })
+     this.scroll.on('pullingUp',() =>{
+       alert('更新数据');
+       this.scroll.finishPullUp();
+     })
+   },
+   methods: {
+     
    },
 }
 </script>
 
-<style>
+<style scoped>
   .wrapper{
     height: 250px;
     background-color: red;

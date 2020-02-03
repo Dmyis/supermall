@@ -1,64 +1,18 @@
 <template>
-  <div id="home">
-    <router-view></router-view>
+  <div id="home" class="wrapper">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <home-swiper :banners='banners' />
-    <home-recommend-view :recommends='recommends' />
-    <home-feature-view />
-    <tab-control  class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
-    <good-list :goods="showGoods" />
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-      <li>11</li>
-      <li>12</li>
-      <li>13</li>
-      <li>14</li>
-      <li>15</li>
-      <li>16</li>
-      <li>17</li>
-      <li>18</li>
-      <li>19</li>
-      <li>20</li>
-      <li>21</li>
-      <li>22</li>
-      <li>23</li>
-      <li>24</li>
-      <li>25</li>
-      <li>26</li>
-      <li>27</li>
-      <li>28</li>
-      <li>29</li>
-      <li>30</li>
-      <li>31</li>
-      <li>32</li>
-      <li>33</li>
-      <li>34</li>
-      <li>35</li>
-      <li>36</li>
-      <li>37</li>
-      <li>38</li>
-      <li>39</li>
-      <li>40</li>
-      <li>41</li>
-      <li>42</li>
-      <li>43</li>
-      <li>44</li>
-      <li>45</li>
-      <li>46</li>
-      <li>47</li>
-      <li>48</li>
-      <li>49</li>
-      <li>50</li>
-    </ul>
+
+    <scroll class="content" ref="scroll" :probe-type='3' @scroll ='contentScroll'
+           :pull-up-load='true' @pullingUp='loadMore'>
+      <home-swiper :banners='banners' />
+      <home-recommend-view :recommends='recommends' />
+      <home-feature-view />
+      <tab-control  class="tab-control" :titles="['流行','新款','精选']" @tabClick="tabClick"/>
+      <good-list :goods="showGoods" />
+    </scroll>
+    <!-- 给组件添加点击事件 -->
+    <back-top  @click.native='backTop' v-show="isShowBack"/>
+
   </div>
 </template>
 
@@ -70,6 +24,8 @@
   import NavBar from 'components/common/navbar/NavBar';
   import TabControl from 'components/content/tabControl/TabControl';
   import GoodList from 'components/content/goods/GoodsList';
+  import Scroll from 'components/common/scroll/Scroll';
+  import BackTop from 'components/content/backTop/BackTop';
 
   import {getHomeMultidata,getHomeGoods} from 'network/home';
 
@@ -83,7 +39,9 @@ export default {
     HomeFeatureView,
     NavBar,
     TabControl,
-    GoodList
+    GoodList,
+    Scroll,
+    BackTop
   },
   data() {
     return {
@@ -95,7 +53,8 @@ export default {
         'new': {page:0, list:[]},
         'sell': {page:0, list:[]}
       },
-      currentType:'pop'
+      currentType:'pop',
+      isShowBack:false
     }
   },
   //生命周期函数，组件一旦创建就会调用函数
@@ -131,6 +90,18 @@ export default {
           break;
       }
     },
+    //通过refs获取组件，使用该组件内的方法
+    backTop() {
+      this.$refs.scroll.scrollTo(0,0 )
+    },
+    // backTop的显示隐藏
+    contentScroll(position) {
+      this.isShowBack = (-position.y) > 1000
+    },
+    loadMore() {
+      // 上拉添加数据
+      this.getHomeGoods(this.currentType)
+    },
 
 
     /**
@@ -148,15 +119,20 @@ export default {
         // 把数据添加到变量里面
         this.goods[type].list.push(...res.data.list) 
         this.goods[type].page +=1;    
+
+        //上拉加载更多
+        this.$refs.scroll.finishPullUp();
       })
     }
   },
 }
 </script>
 
-<style>
+<style scoped>
   #home{
     padding-top: 44px;
+    height: 100vh;
+    position: relative;
   }
   .home-nav{
     background-color: var(--color-tint);
@@ -172,5 +148,13 @@ export default {
     position: sticky;
     top: 44px;
     z-index: 9;
+  }
+  .content{
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    bottom: 49px;
   }
 </style>
