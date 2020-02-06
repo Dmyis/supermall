@@ -1,6 +1,7 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+  <div class="goods-item" @click="itemClick">
+    <!-- 为了解决scrollerHeight长度问题，每当加载完一张图片就调用一些scroll的refresh方法 -->
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -18,6 +19,18 @@ export default {
       default(){
         return {}
       }
+    }
+  },
+  methods: {
+    imageLoad() {
+      // 但是在GoodsListItem组件中不能直接获取到scroll需要使用事件总线（$bus）来发送事件，
+      // 在home里面接收GoodsListItem发送的事件
+      //但是vue里面没有$bus,需要在main.js里面添加 Vue.prototype.$bus = new Vue()
+          
+      this.$bus.$emit('itemImageLoad')
+    },
+    itemClick() {
+      this.$router.push('/detail/' + this.goodsItem.iid)
     }
   }
 }

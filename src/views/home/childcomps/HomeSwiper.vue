@@ -2,7 +2,7 @@
   <swiper>
       <swiper-item v-for="(item,index) in banners" :key="index">
         <a :href="item.link">
-          <img :src="item.image" alt="">
+          <img :src="item.image" alt="" @load="imageImg">
         </a>
       </swiper-item>
     </swiper>
@@ -22,10 +22,24 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      isLoad:false
+    }
+  },
   components:{
     Swiper,
     SwiperItem
-  }
+  },
+  methods: {
+    // 只发送一次得到一张图片的高度就行了
+    imageImg() {
+      if(!this.isLoad){
+        this.$emit('swiperImageLoad')
+        this.isLoad = true
+      }
+    }
+  },
 }
 </script>
 
