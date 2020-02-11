@@ -9,6 +9,14 @@ export function getDetail(iid) {
   })
 }
 
+// 获取推荐数据
+export function getRecommend(){
+  return request({
+    url:'/recommend'
+  })
+}
+
+
 // 获取商品信息 ：因为商品的数据很多，所以我们把需要的数据保存起来，每个组件对应着自己的数据开发就行了
 export class Goods {
   constructor(itemInfo, columns, services) {

@@ -26,13 +26,15 @@ export default {
   },
   data() {
     return {
-      titles:['商品', '参数', '详情', '推荐'],
+      titles:['商品', '参数', '评论', '推荐'],
       currentIndex:0
     }
   },
   methods: {
     titleClick(index) {
-      this.currentIndex = index
+      this.currentIndex = index,
+      // navbar联动效果
+      this.$emit('titleClick',index)
     },
     // 返回
     backClick() {

@@ -30,10 +30,10 @@
   import TabControl from 'components/content/tabControl/TabControl';
   import GoodList from 'components/content/goods/GoodsList';
   import Scroll from 'components/common/scroll/Scroll';
-  import BackTop from 'components/content/backTop/BackTop';
 
   import {getHomeMultidata,getHomeGoods} from 'network/home';
   import {debounce} from 'common/utils';
+  import {backTopMixin} from 'common/mixin';
 
 
 
@@ -47,8 +47,8 @@ export default {
     TabControl,
     GoodList,
     Scroll,
-    BackTop
   },
+  mixins: [backTopMixin],
   data() {
     return {
       banners: [], 
@@ -63,7 +63,8 @@ export default {
       isShowBack:false,
       tabOffsetTop:0,
       isTabFixed:false,
-      saveY:0
+      saveY:0,
+      itemImgListener:null
     }
   },
   //生命周期函数，组件一旦创建就会调用函数
@@ -79,9 +80,12 @@ export default {
   mounted() {
     // 1.接收GoodsListItem发送来的事件就行调用scroll的refresh方法，图片加载完成的事件监听
     const refresh = debounce(this.$refs.scroll.refresh,20)
-    this.$bus.$on('itemImageLoad',() =>{
+
+    //2.对监听的事件进行保存
+    this.itemImgListener = () =>{
       refresh();
-    }) 
+    }
+    this.$bus.$on('itemImageLoad',this.itemImgListener) 
   },
   computed: {
     showGoods() {
@@ -96,8 +100,11 @@ export default {
   },
   // 离开组件时
   deactivated() {
-    //记录滑动的位置
+    //1.记录滑动的位置
     this.saveY = this.$refs.scroll.getScrollY()
+
+    //2.取消全局事件的监听
+    this.$bus.$off('itemImageLoad',this.itemImgListener )
   },
   methods: {
     /**
@@ -121,17 +128,13 @@ export default {
       this.$refs.tabControl2.currentIndex = index;
 
     },
-    //通过refs获取组件，使用该组件内的方法
-    backTop() {
-      this.$refs.scroll.scrollTo(0,0 )
-    },
     //监听Scroll滚动 
     contentScroll(position) {
-      //1.判断BackTop是否隐藏
-      this.isShowBack = (-position.y) > 1000
-
+      //1.判断BackTop是否隐藏:通过混入的属性来判断
+      this.listenShowBackTop(position)
+      
       //2.判断决定tabControl是否吸顶（position：fixed）
-      this.isTabFixed = (-position.y) > this.tabOffsetTop
+      this.isTabFixed = (-position.y) > this.$refs.tabControl2.$el.offsetTop
     },
     // 上拉加载更多
     loadMore() {

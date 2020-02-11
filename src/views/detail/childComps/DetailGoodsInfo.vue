@@ -6,13 +6,13 @@
       <div class="desc">{{detailInfo.desc}}</div>
       <div class="end"></div>
     </div>
-    <div class="info-key">{{detailInfo.detailImage[0].key}}</div>
-    <div class="info-list">
-      <img v-for="(item, index) in detailInfo.detailImage[0].list" :src="item" 
-            :key="index"
-            alt=""
-            @load="imageLoad">
+    <div v-for="(item,index) in detailInfo.detailImage" :key="index">
+      <div class="info-key">{{item.key}}</div>
+      <div class="info-list">
+        <img v-for="(item, index) in item.list" :src="item" :key="index" alt="" @load="imageLoad">
+      </div>
     </div>
+   
   </div>
 </template>
 

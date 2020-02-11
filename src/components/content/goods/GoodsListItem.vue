@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="itemClick">
     <!-- 为了解决scrollerHeight长度问题，每当加载完一张图片就调用一些scroll的refresh方法 -->
-    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -19,6 +19,13 @@ export default {
       default(){
         return {}
       }
+    }
+  },
+  computed: {
+    // 因为详情页也需要用到这个组件而且路径不同所以图片路径不确定
+    showImage() {
+      // return this.goodsItem.show.img || this.goodsItem.image
+      return this.goodsItem.image || this.goodsItem.show.img
     }
   },
   methods: {
