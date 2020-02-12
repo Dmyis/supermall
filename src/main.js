@@ -21,7 +21,10 @@ Vue.use(toast)
 FastClick.attach(document.body)
 
 // 安装vue-lazyload
-Vue.use(VueLazyLoad)
+Vue.use(VueLazyLoad,{
+  // 加载图片的时候用的占位图片
+  loading:require('./assets/img/common/placeholder.png')
+})
 
 new Vue({
   router,
