@@ -1,7 +1,7 @@
 <template>
   <div class="goods-item" @click="itemClick">
     <!-- 为了解决scrollerHeight长度问题，每当加载完一张图片就调用一些scroll的refresh方法 -->
-    <img :src="showImage" alt="" @load="imageLoad">
+    <img v-lazy='showImage' alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
