@@ -36,6 +36,7 @@ export default {
     color: #fff;
     z-index: 999;
     padding: 8px 10px;
+    border-radius: 3px;
     transform:translate(-50%, -50%);
     background-color: rgba(0,0,0,.7)
   }
