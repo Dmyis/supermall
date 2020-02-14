@@ -16,9 +16,9 @@
 import NavBar from 'components/common/navbar/NavBar';
 import CartBottonBar from './childComps/CartBottonBar';
 
-  import CartList from './childComps/CartList';
-  
-  import {mapGetters} from 'vuex';
+import CartList from './childComps/CartList';
+
+import {mapGetters} from 'vuex';
 
 export default {
   name:'Cart',
