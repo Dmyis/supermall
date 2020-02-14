@@ -4,7 +4,7 @@
       <div slot="center">Dmyis商城</div>
     </nav-bar>
 
-    <user-info></user-info>
+    <user-info class="user-info"></user-info>
 
     <section class="account">
       <div class="account-item">

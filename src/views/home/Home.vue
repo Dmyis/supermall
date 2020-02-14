@@ -86,6 +86,7 @@ export default {
       refresh();
     }
     this.$bus.$on('itemImageLoad',this.itemImgListener) 
+    this.$refs.scroll.refresh()
   },
   computed: {
     showGoods() {

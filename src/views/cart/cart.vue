@@ -8,7 +8,7 @@
     <!-- 商品列表 -->
     <cart-list />
     <!-- 底部汇总 -->
-    <cart-botton-bar />
+    <cart-botton-bar class="ignore" />
   </div>
 </template>
 
