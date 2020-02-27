@@ -27,7 +27,7 @@
   import HomeFeatureView from './childcomps/HomeFeatureView';
 
   import NavBar from 'components/common/navbar/NavBar';
-  import TabControl from 'components/content/tabControl/TabControl';
+  import TabControl from 'components/content/tabControl/TabConTrol';
   import GoodList from 'components/content/goods/GoodsList';
   import Scroll from 'components/common/scroll/Scroll';
 
